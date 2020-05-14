@@ -28,4 +28,13 @@ public class GithubUser {
     public void setBlog(String blog) {
         this.blog = blog;
     }
+
+    @Override
+    public String toString() {
+        return "GithubUser{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", blog='" + blog + '\'' +
+                '}';
+    }
 }
