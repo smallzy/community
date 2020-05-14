@@ -14,13 +14,21 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public void insertUser(GithubUser githubUser) {
+    public String insertUser(GithubUser githubUser) {
         User user = new User();
+        String token = UUID.randomUUID().toString();
         user.setAccountId(String.valueOf(githubUser.getId()));
         user.setName(githubUser.getName());
-        user.setToken(UUID.randomUUID().toString());
+        user.setToken(token);
         user.setGmtCreate(System.currentTimeMillis());
         user.setGmtModified(user.getGmtCreate());
         userMapper.InserUser(user);
+        return token;
+    }
+
+    @Override
+    public User findUserByToken(String token) {
+        User userByToken = userMapper.findUserByToken(token);
+        return userByToken;
     }
 }

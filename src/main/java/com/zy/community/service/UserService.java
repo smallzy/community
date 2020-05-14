@@ -1,8 +1,10 @@
 package com.zy.community.service;
 
 import com.zy.community.dto.GithubUser;
+import com.zy.community.pojo.User;
 
 
 public interface UserService {
-    void insertUser(GithubUser user);
+    String insertUser(GithubUser user); //插入用户
+    User findUserByToken(String token);//通过token验证用户
 }
