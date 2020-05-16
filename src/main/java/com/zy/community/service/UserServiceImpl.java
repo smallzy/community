@@ -22,7 +22,9 @@ public class UserServiceImpl implements UserService {
         user.setToken(token);
         user.setGmtCreate(System.currentTimeMillis());
         user.setGmtModified(user.getGmtCreate());
-        userMapper.InserUser(user);
+        user.setBio(githubUser.getBio());
+        user.setHeadImageUrl(githubUser.getAvatar_url());
+        userMapper.InsertGitHubUser(user);
         return token;
     }
 
