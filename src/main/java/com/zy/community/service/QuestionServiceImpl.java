@@ -1,5 +1,6 @@
 package com.zy.community.service;
 
+import com.zy.community.dto.PageNavigationDTO;
 import com.zy.community.dto.QuestionDTO;
 import com.zy.community.mapper.QuestionMapper;
 import com.zy.community.mapper.UserMapper;
@@ -28,8 +29,25 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<QuestionDTO> selectQuestionRecords() {
-        List<Question> questions = questionMapper.selectAllQuestion();
+    public PageNavigationDTO selectQuestionRecords(Integer page, Integer size) {
+
+        //总行数
+        Integer count = questionMapper.selectAll();
+
+        PageNavigationDTO pageNavigationDTO = new PageNavigationDTO();
+        pageNavigationDTO.setPageNavigation(count,page,size);
+
+        if (page<0){
+            page=1;
+        }
+        if (page>pageNavigationDTO.getTotalPage()){
+            page=pageNavigationDTO.getTotalPage();
+        }
+        //计算偏移量
+        Integer offset = size*(page-1);
+
+        List<Question> questions = questionMapper.selectAllQuestion(offset,size);
+
         List<QuestionDTO> questionDTOS = new ArrayList<>();
         if (questions != null){
             for (Question question : questions) {
@@ -40,6 +58,8 @@ public class QuestionServiceImpl implements QuestionService {
                 questionDTOS.add(questionDTO);
             }
         }
-        return questionDTOS;
+        pageNavigationDTO.setQuestionDTOS(questionDTOS);
+
+        return pageNavigationDTO;
     }
 }

@@ -1,5 +1,6 @@
 package com.zy.community.controller;
 
+import com.zy.community.dto.PageNavigationDTO;
 import com.zy.community.dto.QuestionDTO;
 import com.zy.community.pojo.User;
 import com.zy.community.service.QuestionService;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +23,9 @@ public class IndexController {
     private QuestionService questionService;
 
     @GetMapping("/")
-    public String index(HttpServletRequest request, Model model){
+    public String index(HttpServletRequest request, Model model,
+                        @RequestParam(value = "page",defaultValue = "1") Integer page,
+                        @RequestParam(value = "size",defaultValue = "3") Integer size){
         Cookie[] cookies = request.getCookies();
         if(cookies != null) {
             for (Cookie cookie : cookies) {
@@ -35,8 +39,8 @@ public class IndexController {
                 }
             }
         }
-        List<QuestionDTO> questionDTOS = questionService.selectQuestionRecords();
-        model.addAttribute("questionDTOS",questionDTOS);
+        PageNavigationDTO pageNavigationDTO = questionService.selectQuestionRecords(page, size);
+        model.addAttribute("pageNavigationDTO",pageNavigationDTO);
         return "index";
     }
 }
