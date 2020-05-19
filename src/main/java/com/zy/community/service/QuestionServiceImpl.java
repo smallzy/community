@@ -21,11 +21,20 @@ public class QuestionServiceImpl implements QuestionService {
     private UserMapper userMapper;
 
     @Override
-    public void insertQuestion(Question question, User user) {
+    public void insertQuestion(Question question, User user, Integer id) {
+        Question ques = questionMapper.selectQuestion(id);
+        if(ques!=null){
+            ques.setTitle(question.getTitle());
+            ques.setDescription(question.getDescription());
+            ques.setTag(question.getTag());
+            ques.setGmtModified(System.currentTimeMillis());
+            questionMapper.updateQuestion(ques);
+        }else{
             question.setCreator(user.getId());
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
             questionMapper.insertQuestion(question);
+        }
     }
 
     @Override
@@ -61,5 +70,15 @@ public class QuestionServiceImpl implements QuestionService {
         pageNavigationDTO.setQuestionDTOS(questionDTOS);
 
         return pageNavigationDTO;
+    }
+
+    @Override
+    public QuestionDTO getQuestionById(Integer id) {
+        Question question = questionMapper.selectQuestion(id);
+        User user = userMapper.findUserById(question.getCreator());
+        QuestionDTO questionDTO = new QuestionDTO();
+        BeanUtils.copyProperties(question,questionDTO);
+        questionDTO.setUser(user);
+        return questionDTO;
     }
 }

@@ -16,16 +16,17 @@ public class PageNavigationDTO {
     private List<Integer> pages = new ArrayList<>();
     private Integer totalPage=0;
 
+
     public void setPageNavigation(Integer count,Integer page,Integer size){
         if (page<0) page =1;
-        this.page=page;
         //计算总页数
         if(count%size == 0){
             totalPage = count / size;
         }else {
             totalPage = count / size + 1;
         }
-        if (page>totalPage) page=totalPage;
+        if ((count!=0)&&(page>totalPage)) page=totalPage;
+        this.page=page;
 
         pages.add(page);
         //计算pages

@@ -15,16 +15,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String insertUser(GithubUser githubUser) {
-        User user = new User();
         String token = UUID.randomUUID().toString();
-        user.setAccountId(String.valueOf(githubUser.getId()));
-        user.setName(githubUser.getName());
-        user.setToken(token);
-        user.setGmtCreate(System.currentTimeMillis());
-        user.setGmtModified(user.getGmtCreate());
-        user.setBio(githubUser.getBio());
-        user.setHeadImageUrl(githubUser.getAvatar_url());
-        userMapper.InsertGitHubUser(user);
+        //查询数据库是否有此用户，存在则更新token
+        User accountUser = userMapper.getUser(String.valueOf(githubUser.getId()));
+        if (accountUser!=null){
+            accountUser.setName(githubUser.getName());
+            accountUser.setToken(token);
+            accountUser.setBio(githubUser.getBio());
+            accountUser.setHeadImageUrl(githubUser.getAvatar_url());
+            accountUser.setGmtModified(System.currentTimeMillis());
+            userMapper.updateTokenByUserId(accountUser);
+        }else{
+            User user = new User();
+            user.setAccountId(String.valueOf(githubUser.getId()));
+            user.setName(githubUser.getName());
+            user.setToken(token);
+            user.setBio(githubUser.getBio());
+            user.setHeadImageUrl(githubUser.getAvatar_url());
+            user.setGmtCreate(System.currentTimeMillis());
+            user.setGmtModified(user.getGmtCreate());
+            userMapper.InsertGitHubUser(user);}
         return token;
     }
 

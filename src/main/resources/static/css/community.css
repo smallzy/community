@@ -19,3 +19,16 @@ body{
     font-weight: normal;
     color: #999;
 }
+
+.pagination-align{
+    text-align: right;
+}
+
+.profile .section{
+    margin-top: 15px;
+}
+
+.edit-font{
+    font-size: 10px;
+    color: #999;
+}
