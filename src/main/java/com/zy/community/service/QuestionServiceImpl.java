@@ -5,7 +5,9 @@ import com.zy.community.dto.QuestionDTO;
 import com.zy.community.mapper.QuestionMapper;
 import com.zy.community.mapper.UserMapper;
 import com.zy.community.pojo.Question;
+import com.zy.community.pojo.QuestionExample;
 import com.zy.community.pojo.User;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,18 +24,18 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public void insertQuestion(Question question, User user, Integer id) {
-        Question ques = questionMapper.selectQuestion(id);
+        Question ques = questionMapper.selectByPrimaryKey(id);
         if(ques!=null){
             ques.setTitle(question.getTitle());
             ques.setDescription(question.getDescription());
             ques.setTag(question.getTag());
             ques.setGmtModified(System.currentTimeMillis());
-            questionMapper.updateQuestion(ques);
+            questionMapper.updateByPrimaryKeySelective(ques);
         }else{
             question.setCreator(user.getId());
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
-            questionMapper.insertQuestion(question);
+            questionMapper.insert(question);
         }
     }
 
@@ -41,7 +43,9 @@ public class QuestionServiceImpl implements QuestionService {
     public PageNavigationDTO selectQuestionRecords(Integer page, Integer size) {
 
         //总行数
-        Integer count = questionMapper.selectAll();
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.createCriteria();
+        Integer count = (int)questionMapper.countByExample(questionExample);
 
         PageNavigationDTO pageNavigationDTO = new PageNavigationDTO();
         pageNavigationDTO.setPageNavigation(count,page,size);
@@ -55,7 +59,8 @@ public class QuestionServiceImpl implements QuestionService {
         //计算偏移量
         Integer offset = size*(page-1);
 
-        List<Question> questions = questionMapper.selectAllQuestion(offset,size);
+        questionExample.createCriteria();
+        List<Question> questions = questionMapper.selectByExampleWithBLOBsWithRowbounds(questionExample, new RowBounds(offset, size));
 
         List<QuestionDTO> questionDTOS = new ArrayList<>();
         if (questions != null){
@@ -74,7 +79,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public QuestionDTO getQuestionById(Integer id) {
-        Question question = questionMapper.selectQuestion(id);
+        Question question = questionMapper.selectByPrimaryKey(id);
         User user = userMapper.selectByPrimaryKey(question.getCreator());
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question,questionDTO);

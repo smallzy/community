@@ -8,4 +8,7 @@
 [bootstrap](https://v3.bootcss.com/getting-started/)
 
 [bootstrap 3.3.7 下载](https://github.com/twbs/bootstrap/releases/tag/v3.3.7)
+
+mybatisGenerator运行命令 mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
+
 ##工具

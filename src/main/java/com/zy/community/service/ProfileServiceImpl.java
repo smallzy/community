@@ -5,7 +5,9 @@ import com.zy.community.dto.QuestionDTO;
 import com.zy.community.mapper.QuestionMapper;
 import com.zy.community.mapper.UserMapper;
 import com.zy.community.pojo.Question;
+import com.zy.community.pojo.QuestionExample;
 import com.zy.community.pojo.User;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +26,10 @@ public class ProfileServiceImpl implements ProfileService{
         PageNavigationDTO pageNavigationDTO = new PageNavigationDTO();
 
         //用户问题总数
-        Integer count = questionMapper.selectCount(id);
+
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.createCriteria().andCreatorEqualTo(id);
+        Integer count  = (int)questionMapper.countByExample(questionExample);
 
         pageNavigationDTO.setPageNavigation(count,page,size);
 
@@ -34,7 +39,8 @@ public class ProfileServiceImpl implements ProfileService{
         Integer offset = size * (page - 1);
         
         //用户问题详细信息
-        List<Question> questions = questionMapper.selectById(id, offset, size);
+        questionExample.createCriteria().andCreatorEqualTo(id);
+        List<Question> questions = questionMapper.selectByExampleWithBLOBsWithRowbounds(questionExample, new RowBounds(offset, size));
 
         //查询用户信息
         User user = userMapper.selectByPrimaryKey(id);
