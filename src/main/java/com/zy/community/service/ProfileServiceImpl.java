@@ -37,7 +37,7 @@ public class ProfileServiceImpl implements ProfileService{
         List<Question> questions = questionMapper.selectById(id, offset, size);
 
         //查询用户信息
-        User user = userMapper.findUserById(id);
+        User user = userMapper.selectByPrimaryKey(id);
 
         List<QuestionDTO> questionDTOS = new ArrayList<>();
         //将数据映射到数据传输层

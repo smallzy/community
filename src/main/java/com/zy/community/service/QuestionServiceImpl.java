@@ -60,7 +60,7 @@ public class QuestionServiceImpl implements QuestionService {
         List<QuestionDTO> questionDTOS = new ArrayList<>();
         if (questions != null){
             for (Question question : questions) {
-                User user = userMapper.findUserById(question.getCreator());
+                User user = userMapper.selectByPrimaryKey(question.getCreator());
                 QuestionDTO questionDTO = new QuestionDTO();
                 BeanUtils.copyProperties(question,questionDTO);
                 questionDTO.setUser(user);
@@ -75,7 +75,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public QuestionDTO getQuestionById(Integer id) {
         Question question = questionMapper.selectQuestion(id);
-        User user = userMapper.findUserById(question.getCreator());
+        User user = userMapper.selectByPrimaryKey(question.getCreator());
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question,questionDTO);
         questionDTO.setUser(user);
