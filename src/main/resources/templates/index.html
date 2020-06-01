@@ -3,12 +3,21 @@
 <head>
     <title>交流社区</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-    <script src="js/jquery-3.2.1.min.js"></script>
-    <script src="js/bootstrap.min.js" type="application/javascript"></script>
-    <link rel="stylesheet" href="css/community.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <script src="/js/jquery-3.2.1.min.js"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <link rel="stylesheet" href="/css/community.css">
 </head>
+<script type="application/javascript">
+    window.onload = function () {
+        var item = window.localStorage.getItem("closed");
+        if(item){
+            window.close();
+            window.localStorage.removeItem("closed");
+        }
+    }
+</script>
 <body>
 <div th:insert="~{navigation :: nav}"></div>
 <div class="container-fluid main">
@@ -27,7 +36,7 @@
                     <span th:text="${questionDTO.description}"></span><br>
                     <span class="text-font"><span th:text="${questionDTO.user.name}"></span>发起了问题 • <span th:text="${questionDTO.likeCount}?${questionDTO.commentCount}:0"></span> 人关注 •
                         <span th:text="${questionDTO.commentCount}?${questionDTO.commentCount}:0"></span>个回复 •
-                        <span th:text="${questionDTO.viewCount}?${questionDTO.commentCount}:0"></span>次浏览 •
+                        <span th:text="${questionDTO.viewCount}?${questionDTO.viewCount}:0"></span>次浏览 •
                         <span th:text="${#dates.format(questionDTO.gmtCreate, 'yyyy-MM-dd HH:mm:ss')}"></span></span>
                 </div>
                 <hr>

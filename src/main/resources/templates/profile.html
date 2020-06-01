@@ -27,7 +27,7 @@
                     <span th:text="${questionDTO.description}"></span><br>
                     <span class="text-font"><span th:text="${questionDTO.likeCount}?${questionDTO.commentCount}:0"></span> 人关注 •
                         <span th:text="${questionDTO.commentCount}?${questionDTO.commentCount}:0"></span>个回复 •
-                        <span th:text="${questionDTO.viewCount}?${questionDTO.commentCount}:0"></span>次浏览 •
+                        <span th:text="${questionDTO.viewCount}?${questionDTO.viewCount}:0"></span>次浏览 •
                         <span th:text="${#dates.format(questionDTO.gmtCreate, 'yyyy-MM-dd HH:mm:ss')}"></span></span>
                 </div>
                 <hr>

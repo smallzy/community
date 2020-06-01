@@ -2,8 +2,10 @@ package com.zy.community;
 
 import com.zy.community.dto.PageNavigationDTO;
 import com.zy.community.dto.QuestionDTO;
+import com.zy.community.mapper.QuestionExtMapper;
 import com.zy.community.mapper.QuestionMapper;
 import com.zy.community.mapper.UserMapper;
+import com.zy.community.pojo.Comment;
 import com.zy.community.pojo.Question;
 import com.zy.community.pojo.QuestionExample;
 import com.zy.community.pojo.User;
@@ -25,6 +27,9 @@ class CommunityApplicationTests {
     QuestionMapper questionMapper;
 
     @Autowired
+    QuestionExtMapper questionExtMapper;
+
+    @Autowired
     ProfileService profileService;
 
     @Autowired
@@ -40,8 +45,10 @@ class CommunityApplicationTests {
 
     @Test
     void test(){
-        PageNavigationDTO pageNavigationDTO = profileService.selectQuestionById(5, 2, 1);
-        System.out.println(pageNavigationDTO);
+        Question question = new Question();
+        question.setId(1);
+        question.setCommentCount(1);
+        questionExtMapper.updateCommentCount(question);
     }
 
 }

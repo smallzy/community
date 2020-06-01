@@ -32,3 +32,16 @@ body{
     font-size: 10px;
     color: #999;
 }
+
+.media-body{
+    vertical-align: middle;
+}
+
+.comment{
+    margin: 10px 0px;
+}
+
+.btn-reply{
+    float: right;
+    margin-bottom: 10px;
+}

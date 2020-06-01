@@ -2,6 +2,8 @@ package com.zy.community.service;
 
 import com.zy.community.dto.PageNavigationDTO;
 import com.zy.community.dto.QuestionDTO;
+import com.zy.community.exception.CustomizeErrorCode;
+import com.zy.community.exception.CustomizeException;
 import com.zy.community.mapper.QuestionMapper;
 import com.zy.community.mapper.UserMapper;
 import com.zy.community.pojo.Question;
@@ -30,7 +32,10 @@ public class QuestionServiceImpl implements QuestionService {
             ques.setDescription(question.getDescription());
             ques.setTag(question.getTag());
             ques.setGmtModified(System.currentTimeMillis());
-            questionMapper.updateByPrimaryKeySelective(ques);
+            int i = questionMapper.updateByPrimaryKeySelective(ques);
+            if(i!=1){
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FIND);
+            }
         }else{
             question.setCreator(user.getId());
             question.setGmtCreate(System.currentTimeMillis());
@@ -80,6 +85,9 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public QuestionDTO getQuestionById(Integer id) {
         Question question = questionMapper.selectByPrimaryKey(id);
+        if (question==null){
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FIND);
+        }
         User user = userMapper.selectByPrimaryKey(question.getCreator());
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question,questionDTO);
