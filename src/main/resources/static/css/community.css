@@ -45,3 +45,8 @@ body{
     float: right;
     margin-bottom: 10px;
 }
+
+.reply-icon:hover{
+    cursor: pointer;
+    color: #2aabd2;
+}

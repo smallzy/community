@@ -7,7 +7,8 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode {
     LOGIN_ERROR(1003,"用户未登录"),
     SYSTEM_ERROR(1004,"客官出错了"),
     TYPE_NOT_FIND(1005,"评论类型错误"),
-    COMMENT_NOT_FIND(1006,"回复的评论不存在");
+    COMMENT_NOT_FIND(1006,"回复的评论不存在"),
+    COMMENT_IS_EMPTY(1007,"评价是空的");
 
     private Integer code;
     private String message;

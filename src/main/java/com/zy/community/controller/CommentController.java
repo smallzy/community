@@ -9,6 +9,7 @@ import com.zy.community.pojo.User;
 import com.zy.community.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +30,9 @@ public class CommentController {
         User user = (User)request.getSession().getAttribute("user");
         if (user == null){
             return ResultDTO.resultOf(CustomizeErrorCode.LOGIN_ERROR);
+        }
+        if(commentDTO == null || StringUtils.isEmpty(commentDTO.getContent().trim())){
+            return ResultDTO.resultOf(CustomizeErrorCode.COMMENT_IS_EMPTY);
         }
         Comment comment = new Comment();
         comment.setParentId(commentDTO.getParentID());

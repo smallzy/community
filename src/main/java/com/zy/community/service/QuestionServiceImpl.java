@@ -38,6 +38,9 @@ public class QuestionServiceImpl implements QuestionService {
             }
         }else{
             question.setCreator(user.getId());
+            question.setLikeCount(0);
+            question.setViewCount(0);
+            question.setCommentCount(0);
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
             questionMapper.insert(question);

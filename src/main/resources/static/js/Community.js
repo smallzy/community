@@ -1,6 +1,11 @@
 function reply() {
     var questionId = $("#questionId").val();
     var commentContent = $("#commentContent").val();
+
+    if(!(commentContent.trim())){
+        alert("评价不能为空哦！");
+        return ;
+    }
     $.ajax({
         url:"/comment",
         type:"post",
@@ -14,7 +19,7 @@ function reply() {
         success:function(result){
             if(result.code == 200){
                 $("#commentContent").val("");
-
+                window.location.reload();
             }else{
                 if(result.code == 1003){
                     var conf = confirm(result.message);
