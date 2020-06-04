@@ -1,7 +1,9 @@
 package com.zy.community.controller;
 
 import com.zy.community.dto.CommentDTO;
+import com.zy.community.dto.CommentResult;
 import com.zy.community.dto.ResultDTO;
+import com.zy.community.enums.CommentType;
 import com.zy.community.exception.CustomizeErrorCode;
 import com.zy.community.mapper.CommentMapper;
 import com.zy.community.pojo.Comment;
@@ -10,13 +12,11 @@ import com.zy.community.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 
 @Controller
 public class CommentController {
@@ -43,5 +43,12 @@ public class CommentController {
         comment.setGmtModified(System.currentTimeMillis());
         commentService.insertComment(comment);
         return ResultDTO.successCode();
+    }
+
+    @GetMapping("/comment/{id}")
+    @ResponseBody
+    public ResultDTO<List> getComment(@PathVariable(name = "id") Integer id){
+        List<CommentResult> comments = commentService.getCommentsById(id, CommentType.COMMENT);
+        return  ResultDTO.successCode(comments);
     }
 }

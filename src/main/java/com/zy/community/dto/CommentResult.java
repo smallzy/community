@@ -6,5 +6,6 @@ import lombok.Data;
 
 @Data
 public class CommentResult extends Comment {
+    private long commentNum;
     private User user;
 }

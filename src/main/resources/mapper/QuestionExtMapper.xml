@@ -39,5 +39,10 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+  <select id="selectRelated" parameterType="com.zy.community.pojo.Question" resultType="com.zy.community.pojo.Question">
+    select * from question
+    where tag REGEXP #{tag} and id != #{id} limit 0,5
+  </select>
+
 
 </mapper>

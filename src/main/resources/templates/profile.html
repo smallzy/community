@@ -28,19 +28,23 @@
                     <span class="text-font"><span th:text="${questionDTO.likeCount}?${questionDTO.commentCount}:0"></span> 人关注 •
                         <span th:text="${questionDTO.commentCount}?${questionDTO.commentCount}:0"></span>个回复 •
                         <span th:text="${questionDTO.viewCount}?${questionDTO.viewCount}:0"></span>次浏览 •
-                        <span th:text="${#dates.format(questionDTO.gmtCreate, 'yyyy-MM-dd HH:mm:ss')}"></span></span>
+                        <span th:text="${#dates.format(questionDTO.gmtCreate, 'yyyy-MM-dd HH:mm:ss')}"></span>&nbsp;
+                        <a th:if="${session.user!=null && session.user.id==questionDTO.user.id}"
+                           th:href="@{'/publish/' + ${questionDTO.id}}" class="edit-font">
+                            <span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span> 编辑</a>
+                    </span>
                 </div>
                 <hr>
             </div>
             <nav aria-label="Page navigation" class="pagination-align">
                 <ul class="pagination">
                     <li>
-                        <a th:if="${pageNavigationDTO.showFirst}" href="/" aria-label="Previous">
+                        <a th:if="${pageNavigationDTO.showFirst}" href="/profile/questions?page=1" aria-label="Previous">
                             <span aria-hidden="true">&lt;&lt;</span>
                         </a>
                     </li>
                     <li>
-                        <a th:if="${pageNavigationDTO.previous}" th:href="@{/(page=${pageNavigationDTO.page - 1})}" aria-label="Previous">
+                        <a th:if="${pageNavigationDTO.previous}" th:href="@{/profile/questions(page=${pageNavigationDTO.page - 1})}" aria-label="Previous">
                             <span aria-hidden="true">&lt;</span>
                         </a>
                     </li>
@@ -48,12 +52,12 @@
                         th:class="${pageNavigationDTO.page==page}?'active':''"><a th:href="@{/profile/questions(page=${page})}" th:text="${page}"></a>
                     </li>
                     <li>
-                        <a th:if="${pageNavigationDTO.next}" th:href="@{/(page=${pageNavigationDTO.page + 1})}" aria-label="Next">
+                        <a th:if="${pageNavigationDTO.next}" th:href="@{/profile/questions(page=${pageNavigationDTO.page + 1})}" aria-label="Next">
                             <span aria-hidden="true">&gt;</span>
                         </a>
                     </li>
                     <li>
-                        <a th:if="${pageNavigationDTO.showEnd}" th:href="@{/(page=${pageNavigationDTO.totalPage})}" aria-label="Next">
+                        <a th:if="${pageNavigationDTO.showEnd}" th:href="@{/profile/questions(page=${pageNavigationDTO.totalPage})}" aria-label="Next">
                             <span aria-hidden="true">&gt;&gt;</span>
                         </a>
                     </li>

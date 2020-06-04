@@ -37,6 +37,7 @@ public class ProfileController {
         }else if(action.equals("replies")){
             model.addAttribute("section","replies");
             model.addAttribute("sectionName","最新回复");
+            model.addAttribute("pageNavigationDTO",pageNavigationDTO);
         }
         return "profile";
     }

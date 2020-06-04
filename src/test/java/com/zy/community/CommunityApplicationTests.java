@@ -9,6 +9,7 @@ import com.zy.community.pojo.Comment;
 import com.zy.community.pojo.Question;
 import com.zy.community.pojo.QuestionExample;
 import com.zy.community.pojo.User;
+import com.zy.community.service.CommentService;
 import com.zy.community.service.ProfileService;
 import com.zy.community.service.QuestionService;
 import org.apache.ibatis.session.RowBounds;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
@@ -35,6 +37,9 @@ class CommunityApplicationTests {
     @Autowired
     QuestionService questionService;
 
+    @Autowired
+    CommentService commentService;
+
     @Test
     void contextLoads() {
         QuestionExample questionExample = new QuestionExample();
@@ -46,9 +51,14 @@ class CommunityApplicationTests {
     @Test
     void test(){
         Question question = new Question();
-        question.setId(1);
-        question.setCommentCount(1);
-        questionExtMapper.updateCommentCount(question);
+        question.setId(17);
+        question.setDescription("1");
+        question.setCreator(2);
+        question.setTitle("1");
+        question.setGmtCreate(1l);
+        question.setGmtModified(2l);
+        question.setTag("update");
+        questionService.getRelateQuestion(question);
     }
 
 }

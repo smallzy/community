@@ -50,6 +50,7 @@ public class CommentServiceImpl implements CommentService {
             if(dbComment==null){
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FIND);
             }
+            comment.setLikeCount(0L);
             commentMapper.insert(comment);
         }else{
             //回复问题
@@ -66,9 +67,9 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentResult> getCommentsById(Integer id) {
+    public List<CommentResult> getCommentsById(Integer id,CommentType type) {
         CommentExample commentExample = new CommentExample();
-        commentExample.createCriteria().andParentIdEqualTo(id).andTypeEqualTo(CommentType.QUESTION.getType());
+        commentExample.createCriteria().andParentIdEqualTo(id).andTypeEqualTo(type.getType());
         commentExample.setOrderByClause("gmt_create desc");
         List<Comment> comments = commentMapper.selectByExample(commentExample);
 
@@ -96,5 +97,13 @@ public class CommentServiceImpl implements CommentService {
         }).collect(Collectors.toList());
 
         return commentResults;
+    }
+
+    @Override
+    public Long getCommentCount(Integer id) {
+        CommentExample commentExample = new CommentExample();
+        commentExample.createCriteria().andParentIdEqualTo(id).andTypeEqualTo(2);
+        long l = commentMapper.countByExample(commentExample);
+        return l;
     }
 }

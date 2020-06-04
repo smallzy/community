@@ -4,6 +4,7 @@ import com.zy.community.dto.PageNavigationDTO;
 import com.zy.community.dto.QuestionDTO;
 import com.zy.community.exception.CustomizeErrorCode;
 import com.zy.community.exception.CustomizeException;
+import com.zy.community.mapper.QuestionExtMapper;
 import com.zy.community.mapper.QuestionMapper;
 import com.zy.community.mapper.UserMapper;
 import com.zy.community.pojo.Question;
@@ -23,6 +24,8 @@ public class QuestionServiceImpl implements QuestionService {
     private QuestionMapper questionMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
 
     @Override
     public void insertQuestion(Question question, User user, Integer id) {
@@ -53,6 +56,7 @@ public class QuestionServiceImpl implements QuestionService {
         //总行数
         QuestionExample questionExample = new QuestionExample();
         questionExample.createCriteria();
+        questionExample.setOrderByClause("gmt_create desc");
         Integer count = (int)questionMapper.countByExample(questionExample);
 
         PageNavigationDTO pageNavigationDTO = new PageNavigationDTO();
@@ -96,5 +100,21 @@ public class QuestionServiceImpl implements QuestionService {
         BeanUtils.copyProperties(question,questionDTO);
         questionDTO.setUser(user);
         return questionDTO;
+    }
+
+    @Override
+    public List<Question> getRelateQuestion(Question question) {
+        String tag = question.getTag();
+        tag = tag.replace("，", "|");
+        //移除首位和尾部的“|”
+        if(tag.startsWith("|")){
+            tag = tag.substring(1,tag.length());
+        }
+        if (tag.endsWith("|")){
+            tag = tag.substring(0,tag.length()-1);
+        }
+        question.setTag(tag);
+        List<Question> questions = questionExtMapper.selectRelated(question);
+        return questions;
     }
 }

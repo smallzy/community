@@ -10,4 +10,5 @@ import java.util.List;
 public interface QuestionExtMapper {
     int updateViewCount(Question record);
     int updateCommentCount(Question record);
+    List<Question> selectRelated(Question record);
 }

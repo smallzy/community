@@ -46,7 +46,48 @@ body{
     margin-bottom: 10px;
 }
 
-.reply-icon:hover{
+.menu{
+    color: #999999;
+    margin-top: 5px;
+}
+
+.menu .reply-icon:hover{
     cursor: pointer;
     color: #2aabd2;
+}
+
+.menu .active{
+    color: #2aabd2;
+}
+
+.sub-comments{
+    border-radius: 5px;
+    margin-top: 10px;
+    border: 1px solid #eeeeee;
+    padding-top: 15px;
+}
+
+.label-info{
+    margin-right: 5px;
+    font-size: 10px;
+}
+
+.community-tag:hover {
+    background-color: #339dff;
+    color: #fff !important;
+    text-decoration-line: none;
+}
+
+.community-tag {
+    text-decoration-line: none;
+    cursor: pointer;
+    display: inline-block;
+    height: 20px;
+    line-height: 16px;
+    padding: 2px 5px;
+    background-color: #99cfff;
+    font-size: 12px;
+    color: #fff !important;
+    border-radius: 4px;
+    margin: 4px;
 }
